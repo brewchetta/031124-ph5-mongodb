@@ -2,7 +2,6 @@ require('dotenv').config()
 const { MongoClient, ObjectId } = require('mongodb')
 const uri = process.env.MONGO_URL
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const mongoClient = new MongoClient(uri, {
     useUnifiedTopology: true
 })
@@ -14,43 +13,22 @@ const showsConnection = async () => {
     return shows
 }
 
-exports.searchShowById = async function searchShowById(id) {
-    const shows = await showsConnection()
-    
-    const foundShow = await shows.findOne({ _id: ObjectId(id) })
+// READ ALL
+// uses shows.find({})
 
-    return foundShow
-}
 
-exports.allShows = async function allShows() {
-    const shows = await showsConnection()
-    
-    const cursor = await shows.find({})
-    const foundShows = await cursor.toArray()
-    
-    return foundShows
-}
+// READ ONE
+// uses shows.findOne({_id: ObjectId})
 
-exports.createShow = async function createShow(obj) {
-    const shows = await showsConnection()
-    
-    const result = await shows.insertOne(obj)
-    return result
-}
 
-exports.updateShowById = async function(id, updateObj) {
-    const shows = await showsConnection()
+// CREATE ONE
+// uses shows.insertOne(obj)
 
-    await shows.updateOne({ _id: ObjectId(id)}, {"$set": updateObj})
-    const result = await shows.findOne({_id: ObjectId(id)})
-    return result
-}
 
-exports.deleteShowById = async function deleteShowById(id) {
-    const shows = await showsConnection()
+// UPDATE ONE
+// uses shows.updateOne(ObjectId, {'$set': obj})
+// will have to find show again to return it
 
-    console.log("------------------------id:", id)
-    
-    const result = await shows.deleteOne({_id: ObjectId(id)})
-    return result
-}
+
+// DELETE ONE
+// uses shows.deleteOne({_id: ObjectId})
